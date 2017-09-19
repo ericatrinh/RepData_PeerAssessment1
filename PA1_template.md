@@ -1,11 +1,12 @@
-# Untitled
-Erica Trinh  
-September 18, 2017  
+Untitled
+================
+Erica Trinh
+September 18, 2017
 
-## Loading and preprocessing the data
+Loading and preprocessing the data
+----------------------------------
 
-
-```r
+``` r
 file <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
 download.file(file, "/Users/ericatrinh/reproducibleResearchProject1/monitoringData.zip", method="curl")
 unzip("/Users/ericatrinh/reproducibleResearchProject1/monitoringData.zip")
@@ -13,63 +14,55 @@ activity <- read.csv( "/Users/ericatrinh/reproducibleResearchProject1/activity.c
 activity$date <- as.Date( activity$date, format = "%Y-%m-%d") 
 ```
 
-## What is the average daily activity pattern?
+What is the average daily activity pattern?
+-------------------------------------------
 
-
-
-```r
+``` r
 data <- activity[ !is.na(activity$steps), ]
 totalSteps <- tapply(data$steps, data$date, FUN = sum)
 hist(totalSteps, breaks = length(totalSteps), main = "Total Number of Steps", xlab = "Total Steps")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-2-1.png)<!-- -->
+![](PA1_template_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-2-1.png)
 
-```r
+``` r
 mean(totalSteps, na.rm = TRUE) 
 ```
 
-```
-## [1] 10766.19
-```
+    ## [1] 10766.19
 
-```r
+``` r
 median(totalSteps, na.rm = TRUE)
 ```
 
-```
-## [1] 10765
-```
+    ## [1] 10765
 
-##What is the average daily activity pattern?
+What is the average daily activity pattern?
+-------------------------------------------
 
-```r
+``` r
 meanSteps <- tapply(data$steps, data$interval, FUN = mean)
 plot(names(meanSteps), meanSteps, type = "l", main = "Average Daily Activity", xlab = "interval" , ylab = "Average Steps" )
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](PA1_template_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-3-1.png)
 
-```r
+``` r
 names(meanSteps)[match(max(meanSteps), meanSteps)]
 ```
 
-```
-## [1] "835"
-```
+    ## [1] "835"
 
+Imputing missing values
+-----------------------
 
-## Imputing missing values
-
-```r
+``` r
 nrow( activity[ is.na(activity$steps), ] )
 ```
 
-```
-## [1] 2304
-```
+    ## [1] 2304
 
-```r
+``` r
 fill <- as.data.frame( cbind( names(meanSteps), meanSteps) )
 fill$meanSteps <- as.numeric(as.character(fill$meanSteps))
 # fills in missing data
@@ -82,35 +75,30 @@ totalSteps <- tapply(activity$steps, activity$date, FUN = sum)
 hist(totalSteps, breaks = length(totalSteps), main = "Total Number of Steps", xlab = "Total Steps")
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](PA1_template_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-4-1.png)
 
-```r
+``` r
 mean(totalSteps, na.rm = TRUE) 
 ```
 
-```
-## [1] 10765.64
-```
+    ## [1] 10765.64
 
-```r
+``` r
 median(totalSteps, na.rm = TRUE)
 ```
 
-```
-## [1] 10762
-```
+    ## [1] 10762
 
-##Are there differences in activity patterns between weekdays and weekends?
+Are there differences in activity patterns between weekdays and weekends?
+-------------------------------------------------------------------------
 
-```r
+``` r
 require(ggplot2)
 ```
 
-```
-## Loading required package: ggplot2
-```
+    ## Loading required package: ggplot2
 
-```r
+``` r
 weekday <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
 weekend <- c("Saturday", "Sunday")
 activity<- cbind( activity, Day = weekdays(activity$date) )
@@ -120,4 +108,4 @@ data <- aggregate(steps ~ interval + Day ,activity, FUN = sum )
 ggplot( data, aes(interval, steps)) +  geom_line() + facet_wrap(~Day, 2)
 ```
 
-![](PA1_template_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](PA1_template_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-5-1.png)
