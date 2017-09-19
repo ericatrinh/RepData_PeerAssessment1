@@ -65,7 +65,7 @@ nrow( activity[ is.na(activity$steps), ] )
 ``` r
 fill <- as.data.frame( cbind( names(meanSteps), meanSteps) )
 fill$meanSteps <- as.numeric(as.character(fill$meanSteps))
-# fills in missing data
+# fills in missing data with the average interval value
 for( i in 1:nrow(activity) ){
     if( is.na(activity$steps[i]) ){
         activity[i,1] <- round( fill[match(activity$interval[i],fill[,1]),2] )
