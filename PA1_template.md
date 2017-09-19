@@ -1,8 +1,6 @@
 # Untitled
 Erica Trinh  
 September 18, 2017  
-output: github_document
-
 
 ## Loading and preprocessing the data
 
