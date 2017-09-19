@@ -2,8 +2,7 @@
 title: "Untitled"
 author: "Erica Trinh"
 date: "September 18, 2017"
-output: 
-  github_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
